@@ -1,11 +1,11 @@
 import { AiOutlineMenu } from 'react-icons/ai'
-import { useCallback,  useState } from 'react'
-// import { AuthContext } from '../../../providers/AuthProvider'
+import { useCallback, useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
-import Avater from './Avater'
+import { AuthContext } from '../../../Provider/AuthProvider'
+import Avater from './Avater';
 
 const MenuDropdown = () => {
-//   const { user, logOut } = useContext(AuthContext)
+  const { user, logOut } = useContext(AuthContext)
   const [isOpen, setIsOpen] = useState(false)
   const toggleOpen = useCallback(() => {
     setIsOpen(value => !value)
@@ -22,7 +22,7 @@ const MenuDropdown = () => {
         >
           <AiOutlineMenu />
           <div className='hidden md:block'>
-            <Avater/>
+            <Avater />
           </div>
         </div>
       </div>
@@ -35,14 +35,15 @@ const MenuDropdown = () => {
             >
               Home
             </Link>
-           
+            {user ? (
               <div
-                
+                onClick={logOut}
                 className='px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer'
               >
                 Logout
               </div>
-           
+            ) : (
+              <>
                 <Link
                   to='/login'
                   className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'
@@ -55,7 +56,8 @@ const MenuDropdown = () => {
                 >
                   Sign Up
                 </Link>
-              
+              </>
+            )}
           </div>
         </div>
       )}
