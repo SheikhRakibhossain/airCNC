@@ -1,10 +1,15 @@
+import Categories from "../../Components/Categories/Categories";
 
 const Home = () => {
-    return (
-        <>
-            <div className="text-4xl text-center"> Hello baby </div>
-        </>
-    );
+  return (
+    <>
+      
+       
+          <Categories />
+       
+   
+    </>
+  );
 };
 
 export default Home;
