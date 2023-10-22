@@ -1,11 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { AuthContext } from "../../Provider/AuthProvider";
 import { useContext } from "react";
+import { TbFidgetSpinner } from "react-icons/tb";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
-
-const {
+  const navigate = useNavigate();
+  const {
     loading,
     setLoading,
     signIn,
@@ -14,15 +17,19 @@ const {
     logOut,
   } = useContext(AuthContext);
 
-  const handleGoogleSignin=(event)=>{
-    console.log("i am clicking",event)
+  const handleGoogleSignin = (event) => {
+    console.log("i am clicking", event);
     signInWithGoogle()
-    .then(res=>{
-        console.log(res.user)
-    })
-    .catch(error=>console.log(error))
-
-  }
+      .then((res) => {
+        console.log(res.user);
+        navigate("/");
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log(error);
+        toast(error.message);
+      });
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen">
@@ -75,7 +82,11 @@ const {
               type="submit"
               className="bg-rose-500 w-full rounded-md py-3 text-white"
             >
-              Continue
+              {loading ? (
+                <TbFidgetSpinner size={24} className="mx-auto animate-spin" />
+              ) : (
+                "Continue"
+              )}
             </button>
           </div>
         </form>
@@ -84,14 +95,17 @@ const {
             Forgot password?
           </button>
         </div>
-        <div  className="flex items-center pt-4 space-x-1">
+        <div className="flex items-center pt-4 space-x-1">
           <div className="flex-1 h-px sm:w-16 dark:bg-gray-700"></div>
-          <p  className="px-3 text-sm dark:text-gray-400">
+          <p className="px-3 text-sm dark:text-gray-400">
             Login with social accounts
           </p>
           <div className="flex-1 h-px sm:w-16 dark:bg-gray-700"></div>
         </div>
-        <div onClick={handleGoogleSignin} className="flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 border-rounded cursor-pointer">
+        <div
+          onClick={handleGoogleSignin}
+          className="flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 border-rounded cursor-pointer"
+        >
           <FcGoogle size={32} />
 
           <p>Continue with Google</p>
@@ -107,6 +121,19 @@ const {
           .
         </p>
       </div>
+      {/* react toastify constainer */}
+      <ToastContainer
+        position="top-center"
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </div>
   );
 };
