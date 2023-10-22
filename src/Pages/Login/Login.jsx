@@ -1,28 +1,62 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { AuthContext } from "../../Provider/AuthProvider";
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import { TbFidgetSpinner } from "react-icons/tb";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
-  const navigate = useNavigate();
-  const {
-    loading,
-    setLoading,
-    signIn,
-    signInWithGoogle,
-    resetPassword,
-    logOut,
-  } = useContext(AuthContext);
 
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.form?.pathname || "/";
+
+  const { loading, setLoading, signIn, signInWithGoogle, resetPassword } =
+    useContext(AuthContext);
+  const emailRef = useRef();
+  //   user email and password login system
+  const handleLogin = (event) => {
+    event.preventDefault();
+    const form = event.target;
+    const email = form.email.value;
+    const password = form.password.value;
+    signIn(email, password)
+      .then((res) => {
+        console.log(res.user);
+        navigate(from, {replace:true});
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log(error);
+        toast(error.message);
+      });
+  };
+
+  // google signin with firebase
   const handleGoogleSignin = (event) => {
     console.log("i am clicking", event);
     signInWithGoogle()
       .then((res) => {
         console.log(res.user);
-        navigate("/");
+        navigate(from, {replace:true});
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log(error);
+        toast(error.message);
+      });
+  };
+  // password reset function
+  const handleResetPassword = () => {
+    const email = emailRef.current.value;
+    resetPassword(email)
+      .then(() => {
+        toast.success("Please check your email");
+        setLoading(false);
+        navigate(from, {replace:true});
+
       })
       .catch((error) => {
         setLoading(false);
@@ -41,6 +75,7 @@ const Login = () => {
           </p>
         </div>
         <form
+          onSubmit={handleLogin}
           noValidate=""
           action=""
           className="space-y-6 ng-untouched ng-pristine ng-valid"
@@ -51,6 +86,7 @@ const Login = () => {
                 Email address
               </label>
               <input
+                ref={emailRef}
                 type="email"
                 name="email"
                 id="email"
@@ -91,7 +127,10 @@ const Login = () => {
           </div>
         </form>
         <div className="space-y-1">
-          <button className="text-xs hover:underline hover:text-rose-500 text-gray-400">
+          <button
+            onClick={handleResetPassword}
+            className="text-xs hover:underline hover:text-rose-500 text-gray-400"
+          >
             Forgot password?
           </button>
         </div>
