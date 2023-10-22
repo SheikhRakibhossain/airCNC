@@ -22,15 +22,37 @@ const SignUp = () => {
     event.preventDefault();
     const form = event.target;
     const name = form.name.value;
-    // const photoURL = form.photo
     const email = form.email.value;
-    const password = form.password;
-    console.log(name, email, password);
-    createUser(email, password)
-      .then((res) => {
-        const newUser = res.user;
-        console.log(newUser);
-        navigate(from, { replace: true });
+    const password = form.password.value;
+    // image added function
+    const image = form.image.files[0];
+    const formData = new FormData();
+    formData.append("image", image);
+    const URL = `https://api.imgbb.com/1/upload?key=${
+      import.meta.env.VITE_IMGBB_KEY
+    }`;
+    fetch(URL, {
+      method: "POST",
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((ImageData) => {
+        const imageURL = ImageData.data.display_url;
+        createUser(email, password)
+          .then((res) => {
+            const newUser = res.user;
+            console.log(newUser);
+            updateUserProfile(name, imageURL )
+              .then(() => {
+                console.log("Profile updated");
+                navigate(from, { replace: true });
+              })
+              .catch((error) => console.log(error));
+          })
+          .catch((error) => {
+            setLoading(false);
+            toast(error.message);
+          });
       })
       .catch((error) => {
         setLoading(false);
