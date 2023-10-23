@@ -1,24 +1,27 @@
 import { useEffect, useState } from "react";
 import Container from "../../../Layout/Shared/Container/Container";
 import RoomCard from "./RoomCard";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
+import Loader from "../../Loader/Loader";
 
 const Rooms = () => {
-
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    loading(true);
+    setLoading(true);
     fetch("rooms.json")
       .then((res) => res.json())
       .then((data) => {
-        setRooms(data);
         setLoading(false);
+        setRooms(data);
       })
-      .catch(error =>toast(error.message))
+      .catch((error) => toast(error.message));
   }, []);
 
+  if (loading) {
+    return <Loader />;
+  }
   return (
     <>
       <Container>
