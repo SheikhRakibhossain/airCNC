@@ -11,6 +11,7 @@ const Calender = () => {
       direction='vertical'
       showDateDisplay={false}
       minDate={new Date()}
+      className='w-full object-cover'
     />
   )
 }

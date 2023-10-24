@@ -11,8 +11,9 @@ const RoomDetails = () => {
           <Header />
           <div className="grid grid-cols-1 md:grid-cols-7 md:gap-10 pt-12">
             <RoomInfo />
-            <div>
+            <div className="col-span-3 sm:col-start-auto order-first md:order-last">
               <RoomReservation />
+             
             </div>
           </div>
         </div>
