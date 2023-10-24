@@ -3,10 +3,14 @@ import Container from "../../../Layout/Shared/Container/Container";
 import RoomCard from "./RoomCard";
 import { toast } from "react-toastify";
 import Loader from "../../Loader/Loader";
+import { useSearchParams } from "react-router-dom";
 
 const Rooms = () => {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [params, setParams] = useSearchParams();
+  const category = params.get("category");
+  console.log(category);
 
   useEffect(() => {
     setLoading(true);
