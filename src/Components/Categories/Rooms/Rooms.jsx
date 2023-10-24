@@ -4,6 +4,7 @@ import RoomCard from "./RoomCard";
 import { toast } from "react-toastify";
 import Loader from "../../Loader/Loader";
 import { useSearchParams } from "react-router-dom";
+import Heading from "../../../Layout/Shared/Heading/Heading";
 
 const Rooms = () => {
   const [rooms, setRooms] = useState([]);
@@ -34,11 +35,24 @@ const Rooms = () => {
   return (
     <>
       <Container>
-        <div className="pt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-4">
+
+{
+  rooms && rooms.length > 0 ?(
+<div className="pt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-4">
           {rooms.map((room) => (
             <RoomCard key={room.image} room={room}></RoomCard>
           ))}
         </div>
+  ):(
+<div className="pt-12">
+<Heading title="No Room availble in this category" subtitle="Please select other category for more !" center={true}>
+
+</Heading>
+</div>
+  )
+}
+
+        
       </Container>
     </>
   );
