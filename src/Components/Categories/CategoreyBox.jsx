@@ -5,7 +5,7 @@ const CategoreyBox = ({ lable, icon: Icon }) => {
   const navigate = useNavigate();
   const [params, setParams] = useSearchParams();
   const value = params.get("category");
-  console.log(value);
+  // console.log(value);
   const handleClick = () => {
     let currentQuery = {};
     if (params) {

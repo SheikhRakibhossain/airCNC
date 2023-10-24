@@ -17,11 +17,16 @@ const Rooms = () => {
     fetch("rooms.json")
       .then((res) => res.json())
       .then((data) => {
+        if (category) {
+          const filtered = data.filter((room) => room.category === category);
+          setRooms(filtered);
+        } else {
+          setRooms(data);
+        }
         setLoading(false);
-        setRooms(data);
       })
       .catch((error) => toast(error.message));
-  }, []);
+  }, [category]);
 
   if (loading) {
     return <Loader />;
