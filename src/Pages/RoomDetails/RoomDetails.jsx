@@ -1,5 +1,6 @@
 import Container from "../../Layout/Shared/Container/Container";
 import Header from "./Header/Header";
+import RoomReservation from "./Reservation/RoomReservation";
 import RoomInfo from "./RoomInfo/RoomInfo";
 
 const RoomDetails = () => {
@@ -10,7 +11,9 @@ const RoomDetails = () => {
           <Header />
           <div className="grid grid-cols-1 md:grid-cols-7 md:gap-10 pt-12">
             <RoomInfo />
-            <div>Lorem ipsum dolor sit amet.</div>
+            <div>
+              <RoomReservation />
+            </div>
           </div>
         </div>
       </div>
